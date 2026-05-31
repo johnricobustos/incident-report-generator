@@ -1,0 +1,69 @@
+/*
+ * style.css — Custom styles beyond Tailwind for the Northwind Incident
+ * Report Generator. Tailwind (via CDN) handles layout/spacing utilities;
+ * this file owns the brand palette, severity badges, and animations so the
+ * color logic lives in one place rather than scattered across class strings.
+ */
+
+:root {
+  --navy: #1e3a5f;
+  --navy-dark: #16293f;
+}
+
+body {
+  /* Fallback font stack; matches the Tailwind config in index.html. */
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ---- Severity badges -----------------------------------------------------
+ * Blueprint color bands:
+ *   L1-2 → amber (warning) · L3-4 → orange (serious) · L5-6 → red (severe)
+ * The base class sets shape/size; the variant class (set by app.js) sets color.
+ */
+.severity-badge {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+}
+
+.severity-low {
+  background-color: #fef3c7; /* amber-100 */
+  color: #92400e;            /* amber-800 */
+  border-color: #fcd34d;     /* amber-300 */
+}
+
+.severity-mid {
+  background-color: #ffedd5; /* orange-100 */
+  color: #9a3412;            /* orange-800 */
+  border-color: #fdba74;     /* orange-300 */
+}
+
+.severity-high {
+  background-color: #fee2e2; /* red-100 */
+  color: #991b1b;            /* red-800 */
+  border-color: #fca5a5;     /* red-300 */
+}
+
+/* ---- Animations ----------------------------------------------------------
+ * Subtle fade-in for panels revealed by the reactive logic.
+ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in:not(.hidden) {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in:not(.hidden) {
+    animation: none;
+  }
+}

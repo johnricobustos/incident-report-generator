@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Northwind Incident Report Generator</title>
+
+  <!-- Tailwind via Play CDN. Configured inline so we can register the Northwind
+       brand palette as utility classes (bg-navy, text-navy, etc.). -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: "#1e3a5f",
+            "navy-dark": "#16293f",
+          },
+          fontFamily: {
+            sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen">
+
+  <!-- Header / brand bar -->
+  <header class="bg-navy text-white shadow-md">
+    <div class="max-w-4xl mx-auto px-6 py-5 flex items-center gap-3">
+      <div class="h-10 w-10 rounded-lg bg-white/10 flex items-center justify-center font-bold text-lg">N</div>
+      <div>
+        <h1 class="text-xl font-semibold leading-tight">Northwind Solutions</h1>
+        <p class="text-sm text-slate-300">Incident Report Generator — Notice to Explain (NTE)</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-8">
+
+    <!-- ============================================================
+         SCREEN 1 — HR Officer Info (stays consistent across session)
+         ============================================================ -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-base font-semibold text-navy mb-4 flex items-center gap-2">
+        <span class="inline-block h-5 w-1 rounded bg-navy"></span> HR Officer Details
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <label class="block">
+          <span class="text-sm font-medium text-slate-600">HR Officer Name</span>
+          <input id="hrName" type="text" placeholder="e.g., Patricia Bennett"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+        </label>
+        <label class="block">
+          <span class="text-sm font-medium text-slate-600">HR Officer Title</span>
+          <input id="hrTitle" type="text" placeholder="e.g., HR Specialist"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+        </label>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SCREEN 2 — Incident Details
+         ============================================================ -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+      <h2 class="text-base font-semibold text-navy flex items-center gap-2">
+        <span class="inline-block h-5 w-1 rounded bg-navy"></span> Incident Details
+      </h2>
+
+      <!-- Employee selector -->
+      <div>
+        <label class="block">
+          <span class="text-sm font-medium text-slate-600">Select Employee</span>
+          <select id="employeeSelect"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none">
+            <option value="">— Choose an employee —</option>
+          </select>
+        </label>
+
+        <!-- Auto-filled (and editable) employee details -->
+        <div id="employeeDetails" class="mt-4 grid sm:grid-cols-2 gap-4 hidden fade-in">
+          <label class="block">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Employee Email</span>
+            <input id="empEmail" type="email"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Department</span>
+            <input id="empDepartment" type="text"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Position</span>
+            <input id="empPosition" type="text"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Employment Status</span>
+            <input id="empStatus" type="text"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Supervisor Name</span>
+            <input id="supName" type="text"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Supervisor Email</span>
+            <input id="supEmail" type="email"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+        </div>
+      </div>
+
+      <!-- Violation category -->
+      <div>
+        <label class="block">
+          <span class="text-sm font-medium text-slate-600">Violation Category</span>
+          <select id="violationSelect"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none">
+            <option value="">— Choose a violation category —</option>
+          </select>
+        </label>
+
+        <!-- Violation reference panel (description + examples) -->
+        <div id="violationInfo" class="mt-3 rounded-lg bg-slate-50 border border-slate-200 p-4 hidden fade-in">
+          <p id="violationDescription" class="text-sm text-slate-700"></p>
+          <ul id="violationExamples" class="mt-2 list-disc list-inside text-sm text-slate-500 space-y-1"></ul>
+        </div>
+      </div>
+
+      <!-- Severity -->
+      <div>
+        <label class="block">
+          <span class="text-sm font-medium text-slate-600">Severity Level</span>
+          <select id="severitySelect" disabled
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none disabled:bg-slate-100 disabled:text-slate-400">
+            <option value="">— Select a violation first —</option>
+          </select>
+        </label>
+
+        <!-- Severity consequence panel -->
+        <div id="severityInfo" class="mt-3 rounded-lg border border-slate-200 p-4 hidden fade-in space-y-3">
+          <div class="flex items-center gap-3">
+            <span id="severityBadge" class="severity-badge">Level —</span>
+            <span id="severityGuideline" class="text-sm text-slate-700"></span>
+          </div>
+          <dl class="grid sm:grid-cols-2 gap-3 text-sm">
+            <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+              <dt class="text-xs font-medium text-slate-500 uppercase tracking-wide">Monitoring Period</dt>
+              <dd id="monitoringPeriod" class="mt-1 text-slate-800"></dd>
+            </div>
+            <div class="rounded-lg bg-slate-50 border border-slate-200 p-3">
+              <dt class="text-xs font-medium text-slate-500 uppercase tracking-wide">Incentive Impact</dt>
+              <dd id="incentiveImpact" class="mt-1 text-slate-800"></dd>
+            </div>
+          </dl>
+          <!-- Only shown when the selected employee is Probationary -->
+          <div id="probationaryBox" class="rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm hidden">
+            <dt class="text-xs font-medium text-amber-700 uppercase tracking-wide">Probationary Consequence</dt>
+            <dd id="probationaryConsequence" class="mt-1 text-amber-900"></dd>
+          </div>
+        </div>
+      </div>
+
+      <!-- Incident description -->
+      <label class="block">
+        <span class="text-sm font-medium text-slate-600">Incident Description</span>
+        <textarea id="incidentDescription" rows="5"
+          placeholder="Describe the specific incident, including date, time, location, and observable behavior. Be factual and avoid interpretation."
+          class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none"></textarea>
+      </label>
+
+      <!-- Date of incident + additional notes -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <label class="block">
+          <span class="text-sm font-medium text-slate-600">Date of Incident</span>
+          <input id="incidentDate" type="date"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+        </label>
+      </div>
+
+      <label class="block">
+        <span class="text-sm font-medium text-slate-600">Additional Notes <span class="text-slate-400 font-normal">(optional)</span></span>
+        <textarea id="additionalNotes" rows="2"
+          placeholder="Supervisor's notes or extra context."
+          class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none"></textarea>
+      </label>
+    </section>
+
+    <!-- Generate button — present but inert until Chunk 2 wires AI/demo output. -->
+    <div class="flex justify-end">
+      <button id="generateBtn" type="button"
+        class="bg-navy hover:bg-navy-dark text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-colors">
+        Generate NTE Email
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 py-8 text-center text-xs text-slate-400">
+    Northwind Solutions HR Department · Internal Tool · Sample/fictional data
+  </footer>
+
+  <!-- Data first (defines NORTHWIND_DATA), then app logic. -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
