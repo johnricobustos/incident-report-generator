@@ -79,6 +79,7 @@
             <option value="">— Choose an employee —</option>
           </select>
         </label>
+        <p id="errEmployee" class="error-msg hidden">Please select an employee.</p>
 
         <!-- Auto-filled (and editable) employee details -->
         <div id="employeeDetails" class="mt-4 grid sm:grid-cols-2 gap-4 hidden fade-in">
@@ -124,6 +125,7 @@
             <option value="">— Choose a violation category —</option>
           </select>
         </label>
+        <p id="errViolation" class="error-msg hidden">Please select a violation category.</p>
 
         <!-- Violation reference panel (description + examples) -->
         <div id="violationInfo" class="mt-3 rounded-lg bg-slate-50 border border-slate-200 p-4 hidden fade-in">
@@ -141,6 +143,7 @@
             <option value="">— Select a violation first —</option>
           </select>
         </label>
+        <p id="errSeverity" class="error-msg hidden">Please select a severity level.</p>
 
         <!-- Severity consequence panel -->
         <div id="severityInfo" class="mt-3 rounded-lg border border-slate-200 p-4 hidden fade-in space-y-3">
@@ -173,6 +176,7 @@
           placeholder="Describe the specific incident, including date, time, location, and observable behavior. Be factual and avoid interpretation."
           class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none"></textarea>
       </label>
+      <p id="errDescription" class="error-msg hidden -mt-4">Please describe the incident.</p>
 
       <!-- Date of incident + additional notes -->
       <div class="grid sm:grid-cols-2 gap-4">
@@ -191,13 +195,90 @@
       </label>
     </section>
 
-    <!-- Generate button — present but inert until Chunk 2 wires AI/demo output. -->
+    <!-- Generate button -->
     <div class="flex justify-end">
       <button id="generateBtn" type="button"
         class="bg-navy hover:bg-navy-dark text-white font-semibold px-6 py-3 rounded-lg shadow-sm transition-colors">
         Generate NTE Email
       </button>
     </div>
+
+    <!-- ============================================================
+         SCREEN 4 — Generated Email Output (Demo Mode)
+         Hidden until a valid Generate; faded in by app.js.
+         ============================================================ -->
+    <section id="emailPanel" class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hidden fade-in">
+      <div class="bg-navy text-white px-6 py-3 flex items-center justify-between print-hide-bar">
+        <h2 class="text-base font-semibold">Generated NTE — Draft</h2>
+        <span class="text-xs bg-amber-400 text-navy-dark font-semibold px-2 py-1 rounded">DEMO MODE — sample output</span>
+      </div>
+
+      <!-- The printable / copyable email document -->
+      <article id="emailDocument" class="px-6 py-6 space-y-5">
+
+        <!-- HEADER -->
+        <div class="text-sm leading-relaxed border-b border-slate-200 pb-4">
+          <div class="grid grid-cols-[4.5rem_1fr] gap-y-1">
+            <span class="font-semibold text-slate-500">TO:</span><span id="outTo" class="text-slate-800"></span>
+            <span class="font-semibold text-slate-500">CC:</span><span id="outCc" class="text-slate-800"></span>
+            <span class="font-semibold text-slate-500">FROM:</span><span id="outFrom" class="text-slate-800"></span>
+            <span class="font-semibold text-slate-500">DATE:</span><span id="outDate" class="text-slate-800"></span>
+            <span class="font-semibold text-slate-500">SUBJECT:</span><span id="outSubject" class="text-slate-800 font-medium"></span>
+          </div>
+        </div>
+
+        <!-- BADGE / CONSEQUENCE AREA -->
+        <div class="flex flex-wrap items-center gap-3 text-sm">
+          <span id="emailBadge" class="severity-badge">Level —</span>
+          <span class="text-slate-500">|</span>
+          <span><span class="font-semibold text-slate-500">Monitoring:</span> <span id="outMonitoring" class="text-slate-800"></span></span>
+          <span class="text-slate-500">|</span>
+          <span><span class="font-semibold text-slate-500">Incentive:</span> <span id="outIncentive" class="text-slate-800"></span></span>
+        </div>
+        <div id="outProbationaryBox" class="rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm hidden">
+          <span class="font-semibold text-amber-700">Probationary consequence:</span>
+          <span id="outProbationary" class="text-amber-900"></span>
+        </div>
+
+        <!-- BODY (editable in place) -->
+        <div>
+          <label class="text-xs font-medium text-slate-400 uppercase tracking-wide print-hide-bar">Email body — editable</label>
+          <textarea id="emailBody" rows="18"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-3 text-sm leading-relaxed text-slate-800 focus:border-navy focus:ring-1 focus:ring-navy outline-none font-sans resize-y"></textarea>
+          <!-- Print-only mirror: textareas don't print their value reliably,
+               so app.js copies the body here on beforeprint. -->
+          <div id="emailBodyPrint" class="email-body-print" aria-hidden="true"></div>
+        </div>
+
+        <!-- SIGNATURE -->
+        <div class="text-sm leading-relaxed text-slate-800 border-t border-slate-200 pt-4">
+          <p>Sincerely,</p>
+          <p class="mt-3 font-semibold" id="outSigName"></p>
+          <p id="outSigTitle"></p>
+          <p>Northwind Solutions HR Department</p>
+        </div>
+      </article>
+
+      <!-- ACTION BUTTONS -->
+      <div class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex flex-wrap gap-3 print-hide-bar">
+        <button id="copyBtn" type="button"
+          class="bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+          Copy to Clipboard
+        </button>
+        <button id="downloadBtn" type="button"
+          class="bg-white hover:bg-slate-100 text-navy border border-navy text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+          Download as .txt
+        </button>
+        <button id="printBtn" type="button"
+          class="bg-white hover:bg-slate-100 text-navy border border-navy text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+          Print
+        </button>
+        <button id="resetBtn" type="button"
+          class="ml-auto bg-white hover:bg-red-50 text-red-700 border border-red-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+          Reset
+        </button>
+      </div>
+    </section>
 
   </main>
 

@@ -37,7 +37,43 @@
     probationaryConsequence: document.getElementById("probationaryConsequence"),
 
     incidentDate: document.getElementById("incidentDate"),
+    incidentDescription: document.getElementById("incidentDescription"),
+    additionalNotes: document.getElementById("additionalNotes"),
+    hrName: document.getElementById("hrName"),
+    hrTitle: document.getElementById("hrTitle"),
+
+    // Validation error messages
+    errEmployee: document.getElementById("errEmployee"),
+    errViolation: document.getElementById("errViolation"),
+    errSeverity: document.getElementById("errSeverity"),
+    errDescription: document.getElementById("errDescription"),
+
+    // Generate + email output
+    generateBtn: document.getElementById("generateBtn"),
+    emailPanel: document.getElementById("emailPanel"),
+    outTo: document.getElementById("outTo"),
+    outCc: document.getElementById("outCc"),
+    outFrom: document.getElementById("outFrom"),
+    outDate: document.getElementById("outDate"),
+    outSubject: document.getElementById("outSubject"),
+    emailBadge: document.getElementById("emailBadge"),
+    outMonitoring: document.getElementById("outMonitoring"),
+    outIncentive: document.getElementById("outIncentive"),
+    outProbationaryBox: document.getElementById("outProbationaryBox"),
+    outProbationary: document.getElementById("outProbationary"),
+    emailBody: document.getElementById("emailBody"),
+    outSigName: document.getElementById("outSigName"),
+    outSigTitle: document.getElementById("outSigTitle"),
+
+    // Action buttons
+    copyBtn: document.getElementById("copyBtn"),
+    downloadBtn: document.getElementById("downloadBtn"),
+    printBtn: document.getElementById("printBtn"),
+    resetBtn: document.getElementById("resetBtn"),
   };
+
+  // Violations that get an expedited 3-day response deadline (vs. 5 standard).
+  const EXPEDITED_VIOLATIONS = new Set(["V-HAR", "V-FRD"]);
 
   // --- Helpers ------------------------------------------------------------
 
@@ -169,6 +205,257 @@
     els.severityInfo.classList.remove("hidden");
   }
 
+  // --- Email generation (Demo Mode) ---------------------------------------
+
+  // Format an ISO yyyy-mm-dd (or Date) as "June 1, 2026". Falls back to the
+  // raw string if it can't be parsed, so the email never shows "Invalid Date".
+  function formatDate(value) {
+    const d = value instanceof Date ? value : new Date(value + "T00:00:00");
+    if (Number.isNaN(d.getTime())) return String(value || "");
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  }
+
+  function firstNameOf(fullName) {
+    return (fullName || "").trim().split(/\s+/)[0] || "Employee";
+  }
+
+  // Clear all validation error states.
+  function clearErrors() {
+    [["errEmployee", "employeeSelect"], ["errViolation", "violationSelect"],
+     ["errSeverity", "severitySelect"], ["errDescription", "incidentDescription"]]
+      .forEach(([errId, fieldId]) => {
+        els[errId].classList.add("hidden");
+        els[fieldId].classList.remove("input-error");
+      });
+  }
+
+  // Returns true if all required fields are filled; otherwise shows inline
+  // errors next to the offending fields and returns false.
+  function validate() {
+    clearErrors();
+    let ok = true;
+    const fail = (errId, fieldId) => {
+      els[errId].classList.remove("hidden");
+      els[fieldId].classList.add("input-error");
+      ok = false;
+    };
+    if (!els.employeeSelect.value) fail("errEmployee", "employeeSelect");
+    if (!els.violationSelect.value) fail("errViolation", "violationSelect");
+    if (!els.severitySelect.value) fail("errSeverity", "severitySelect");
+    if (!els.incidentDescription.value.trim()) fail("errDescription", "incidentDescription");
+    return ok;
+  }
+
+  // Build the editable body text, templated by severity band. Placeholders are
+  // filled from the assembled context. Body runs from greeting to closing; the
+  // signature block is rendered/appended separately.
+  function buildBodyText(ctx) {
+    const intro =
+      `Dear ${ctx.firstName},\n\n` +
+      `This letter serves as a formal Notice to Explain regarding a matter concerning ${ctx.category}, ` +
+      `recorded on ${ctx.incidentDateLong}. It has been documented as a Level ${ctx.level} of ${ctx.maxLevel} concern under company policy.\n\n` +
+      `The specific circumstances reported are as follows:\n${ctx.incidentDescription}\n`;
+
+    const consequences =
+      `\nIn connection with this notice, a ${ctx.monitoringLower} will apply. Regarding incentives: ${ctx.incentive} ` +
+      (ctx.probationary ? `As you are currently under probationary status, please also note: ${ctx.probationary} ` : "") +
+      `You are requested to submit a written explanation within ${ctx.deadlineDays} calendar days of receiving this notice.\n`;
+
+    let stance;
+    if (ctx.band === "low") {
+      stance =
+        `\nWhile this matter is assessed at a lower severity level, it is being formally documented to maintain consistency ` +
+        `and to provide you the opportunity to share your account of the circumstances.\n`;
+    } else if (ctx.band === "mid") {
+      stance =
+        `\nThis matter is regarded as a significant concern. You are asked to provide a full account of the circumstances ` +
+        `so that the matter can be reviewed fairly and in accordance with company policy.\n`;
+    } else {
+      stance =
+        `\nThis matter is regarded with the utmost seriousness and is subject to formal review. ` +
+        `You are asked to provide a complete account of the circumstances, which will be carefully considered before any further determination is made.\n`;
+    }
+
+    const closing =
+      `\nPlease be advised that this notice is an opportunity for you to explain the circumstances; it is not a final determination. ` +
+      `Should you wish to provide context or have any questions, you may contact the Human Resources department directly. ` +
+      `Your written response will be reviewed before any further action is considered.\n`;
+
+    return intro + stance + consequences + closing;
+  }
+
+  // Assemble the structured incident context from current form state.
+  function assembleContext() {
+    const emp = findEmployee(els.employeeSelect.value);
+    const v = findViolation(els.violationSelect.value);
+    const level = parseInt(els.severitySelect.value, 10);
+    const band = level <= 2 ? "low" : level <= 4 ? "mid" : "high";
+    const isProbationary = (els.empStatus.value || "").trim().toLowerCase() === "probationary";
+    const monitoringLabel = NORTHWIND_DATA.monitoring_periods[level].label;
+
+    const hrName = els.hrName.value.trim() || "[HR Officer Name]";
+    const hrTitle = els.hrTitle.value.trim() || "[HR Officer Title]";
+
+    return {
+      firstName: firstNameOf(emp.full_name),
+      fullName: emp.full_name,
+      category: v.category,
+      violationId: v.id,
+      level,
+      maxLevel: v.severity_range[1],
+      band,
+      monitoringLabel,
+      monitoringLower: monitoringLabel.charAt(0).toLowerCase() + monitoringLabel.slice(1),
+      incentive: NORTHWIND_DATA.incentive_impact[level],
+      probationary: isProbationary ? NORTHWIND_DATA.probationary_consequences[level] : null,
+      incidentDescription: els.incidentDescription.value.trim(),
+      additionalNotes: els.additionalNotes.value.trim(),
+      incidentDateLong: formatDate(els.incidentDate.value),
+      noticeDateLong: formatDate(new Date()),
+      deadlineDays: EXPEDITED_VIOLATIONS.has(v.id) ? 3 : 5,
+      empEmail: els.empEmail.value.trim(),
+      supEmail: els.supEmail.value.trim(),
+      hrEmail: NORTHWIND_DATA.company.hr_department.email,
+      hrName,
+      hrTitle,
+    };
+  }
+
+  // Render the assembled context into the email panel.
+  function renderEmail(ctx) {
+    els.outTo.textContent = ctx.empEmail;
+    els.outCc.textContent = [ctx.supEmail, ctx.hrEmail].filter(Boolean).join("; ");
+    els.outFrom.textContent = ctx.hrName;
+    els.outDate.textContent = ctx.noticeDateLong;
+    els.outSubject.textContent = `Notice to Explain — ${ctx.category} (Severity Level ${ctx.level})`;
+
+    els.emailBadge.textContent = `Level ${ctx.level} of ${ctx.maxLevel}`;
+    els.emailBadge.className = "severity-badge " + severityVariant(ctx.level);
+    els.outMonitoring.textContent = ctx.monitoringLabel;
+    els.outIncentive.textContent = ctx.incentive;
+
+    if (ctx.probationary) {
+      els.outProbationary.textContent = ctx.probationary;
+      els.outProbationaryBox.classList.remove("hidden");
+    } else {
+      els.outProbationaryBox.classList.add("hidden");
+    }
+
+    els.emailBody.value = buildBodyText(ctx);
+    els.outSigName.textContent = ctx.hrName;
+    els.outSigTitle.textContent = ctx.hrTitle;
+  }
+
+  function onGenerate() {
+    if (!validate()) {
+      // Surface the first error to the user.
+      els.emailPanel.classList.add("hidden");
+      const firstErr = document.querySelector(".error-msg:not(.hidden)");
+      if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    const ctx = assembleContext();
+    renderEmail(ctx);
+    // Re-trigger the fade-in animation by toggling hidden off after a frame.
+    els.emailPanel.classList.remove("hidden");
+    els.emailPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Build the full email as clean plain text (header + body + signature) for
+  // copy/download — formatted to paste cleanly into Outlook/Gmail.
+  function buildPlainText() {
+    const headerLines = [
+      `TO: ${els.outTo.textContent}`,
+      `CC: ${els.outCc.textContent}`,
+      `FROM: ${els.outFrom.textContent}`,
+      `DATE: ${els.outDate.textContent}`,
+      `SUBJECT: ${els.outSubject.textContent}`,
+    ];
+    const signature = [
+      "Sincerely,",
+      "",
+      els.outSigName.textContent,
+      els.outSigTitle.textContent,
+      "Northwind Solutions HR Department",
+    ];
+    // Body textarea holds greeting..closing; normalize trailing whitespace.
+    const body = els.emailBody.value.replace(/\s+$/,"");
+    return headerLines.join("\n") + "\n\n" + body + "\n\n" + signature.join("\n") + "\n";
+  }
+
+  function onCopy() {
+    const text = buildPlainText();
+    const flash = (msg) => {
+      const orig = els.copyBtn.textContent;
+      els.copyBtn.textContent = msg;
+      setTimeout(() => { els.copyBtn.textContent = orig; }, 1500);
+    };
+    // navigator.clipboard may be unavailable under file:// (not a secure
+    // context in some browsers), so fall back to execCommand.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => flash("Copied!"), () => legacyCopy(text, flash));
+    } else {
+      legacyCopy(text, flash);
+    }
+  }
+
+  function legacyCopy(text, flash) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (_) { ok = false; }
+    document.body.removeChild(ta);
+    flash(ok ? "Copied!" : "Press Ctrl+C");
+  }
+
+  function onDownload() {
+    const text = buildPlainText();
+    const empId = els.employeeSelect.value || "employee";
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `NTE_${empId}_${els.incidentDate.value || "draft"}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function onReset() {
+    // Clear the whole form and hide the email panel.
+    els.hrName.value = "";
+    els.hrTitle.value = "";
+    els.employeeSelect.value = "";
+    els.employeeDetails.classList.add("hidden");
+    ["empEmail","empDepartment","empPosition","empStatus","supName","supEmail"]
+      .forEach((id) => { els[id].value = ""; });
+    els.violationSelect.value = "";
+    els.violationInfo.classList.add("hidden");
+    els.severitySelect.innerHTML = "";
+    els.severitySelect.appendChild(new Option("— Select a violation first —", ""));
+    els.severitySelect.disabled = true;
+    els.severityInfo.classList.add("hidden");
+    els.incidentDescription.value = "";
+    els.additionalNotes.value = "";
+    clearErrors();
+    els.emailPanel.classList.add("hidden");
+    setDefaultDate();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function setDefaultDate() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    els.incidentDate.value = `${yyyy}-${mm}-${dd}`;
+  }
+
   // --- Init ---------------------------------------------------------------
 
   function init() {
@@ -179,12 +466,40 @@
     els.violationSelect.addEventListener("change", onViolationChange);
     els.severitySelect.addEventListener("change", onSeverityChange);
 
-    // Default incident date to today (local time).
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const dd = String(now.getDate()).padStart(2, "0");
-    els.incidentDate.value = `${yyyy}-${mm}-${dd}`;
+    // Email generation + actions
+    els.generateBtn.addEventListener("click", onGenerate);
+    els.copyBtn.addEventListener("click", onCopy);
+    els.downloadBtn.addEventListener("click", onDownload);
+    els.printBtn.addEventListener("click", () => window.print());
+
+    // Keep the print-only body mirror in sync with the editable textarea.
+    window.addEventListener("beforeprint", () => {
+      const mirror = document.getElementById("emailBodyPrint");
+      if (mirror) mirror.textContent = els.emailBody.value;
+    });
+    els.resetBtn.addEventListener("click", onReset);
+
+    // Clear a field's error as soon as the user addresses it.
+    els.employeeSelect.addEventListener("change", () => {
+      els.errEmployee.classList.add("hidden");
+      els.employeeSelect.classList.remove("input-error");
+    });
+    els.violationSelect.addEventListener("change", () => {
+      els.errViolation.classList.add("hidden");
+      els.violationSelect.classList.remove("input-error");
+    });
+    els.severitySelect.addEventListener("change", () => {
+      els.errSeverity.classList.add("hidden");
+      els.severitySelect.classList.remove("input-error");
+    });
+    els.incidentDescription.addEventListener("input", () => {
+      if (els.incidentDescription.value.trim()) {
+        els.errDescription.classList.add("hidden");
+        els.incidentDescription.classList.remove("input-error");
+      }
+    });
+
+    setDefaultDate();
   }
 
   document.addEventListener("DOMContentLoaded", init);
