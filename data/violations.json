@@ -1,0 +1,193 @@
+{
+  "monitoring_periods": {
+    "1": { "days": 30, "label": "30-day monitoring period" },
+    "2": { "days": 60, "label": "60-day monitoring period" },
+    "3": { "days": 90, "label": "90-day monitoring period" },
+    "4": { "days": 120, "label": "120-day monitoring period" },
+    "5": { "days": 180, "label": "180-day monitoring period" },
+    "6": { "days": null, "label": "Permanent record — termination review initiated" }
+  },
+  "incentive_impact": {
+    "1": "Logged on record. No impact on monthly incentives.",
+    "2": "50% incentive deduction for the month of violation.",
+    "3": "Employee is ineligible for any incentives during the 90-day monitoring period.",
+    "4": "Employee is ineligible for incentives during the 120-day monitoring period and ineligible for the next quarterly bonus.",
+    "5": "Employee is ineligible for incentives for 180 days and ineligible for promotion consideration for one (1) full year from the date of this notice.",
+    "6": "All pending and future incentives are forfeited. Employee is referred to HR for a termination review interview."
+  },
+  "probationary_consequences": {
+    "1": "Violation logged. No change to probationary status.",
+    "2": "Violation logged. Probationary supervisor must conduct a formal coaching session within 7 days.",
+    "3": "Employee is flagged for non-regularization review. Regularization will be reassessed at the end of probation.",
+    "4": "Employee receives a no-recommendation for regularization. Contract review required before probation ends.",
+    "5": "Probationary contract is subject to immediate review by HR. Continued employment is not guaranteed.",
+    "6": "Probationary contract is terminated, subject to HR interview and due process."
+  },
+  "violations": [
+    {
+      "id": "V-ATT",
+      "category": "Attendance & Punctuality",
+      "description": "Covers tardiness, extended or unauthorized breaks, no-shows, undertime, and failure to follow attendance protocols.",
+      "examples": [
+        "Repeated tardiness (3+ instances in a month)",
+        "Extended lunch breaks beyond allowed time",
+        "No-show without prior notice",
+        "Leaving the workstation without proper logging",
+        "Failure to clock in or out"
+      ],
+      "severity_range": [1, 5],
+      "severity_guidelines": {
+        "1": "First or second isolated tardiness; minor break overrun",
+        "2": "Pattern of tardiness within a single month; repeated extended breaks",
+        "3": "No-show without notice; significant pattern of attendance issues",
+        "4": "Multiple no-shows; chronic attendance violations after prior warnings",
+        "5": "Job abandonment (3+ consecutive no-shows); attendance fraud"
+      },
+      "default_consequences": [
+        "Issuance of this Notice to Explain (NTE)",
+        "Mandatory written response within 5 calendar days",
+        "Monitoring period as indicated by severity level",
+        "Incentive impact as defined by severity level",
+        "Possible disciplinary action upon repeat offense"
+      ]
+    },
+    {
+      "id": "V-PERF",
+      "category": "Performance & Productivity",
+      "description": "Covers failure to meet performance targets, low productivity, idle time, and failure to follow standard operating procedures (SOPs) that result in poor work output.",
+      "examples": [
+        "Failure to meet monthly productivity quotas",
+        "Excessive idle time during shift",
+        "Repeated errors in deliverables",
+        "Failure to complete assigned tasks within deadlines",
+        "Negligence resulting in rework or customer complaints"
+      ],
+      "severity_range": [1, 5],
+      "severity_guidelines": {
+        "1": "First-time minor underperformance; isolated missed task",
+        "2": "Repeated minor underperformance within a single review period",
+        "3": "Consistent failure to meet quotas; placement on Performance Improvement Plan (PIP)",
+        "4": "Failure to improve following a PIP; significant productivity loss",
+        "5": "Gross negligence resulting in financial loss or major service disruption"
+      },
+      "default_consequences": [
+        "Issuance of this Notice to Explain (NTE)",
+        "Mandatory written response within 5 calendar days",
+        "Performance Improvement Plan (PIP) where applicable",
+        "Monitoring period as indicated by severity level",
+        "Incentive impact as defined by severity level"
+      ]
+    },
+    {
+      "id": "V-POL",
+      "category": "Policy Violations",
+      "description": "Covers violations of company policy that do not directly involve misconduct or fraud — such as dress code, unauthorized use of company equipment, or breach of standard operating procedures.",
+      "examples": [
+        "Dress code violations",
+        "Unauthorized use of company equipment or property",
+        "Use of personal devices during prohibited hours",
+        "Breach of documented SOPs (non-safety-critical)",
+        "Failure to comply with company communications protocol"
+      ],
+      "severity_range": [1, 4],
+      "severity_guidelines": {
+        "1": "First-time minor dress code or protocol violation",
+        "2": "Repeated minor violations; unauthorized equipment use",
+        "3": "Deliberate breach of SOP; repeated policy violations after warning",
+        "4": "Serious policy violation causing operational disruption or risk"
+      },
+      "default_consequences": [
+        "Issuance of this Notice to Explain (NTE)",
+        "Mandatory written response within 5 calendar days",
+        "Mandatory refresher on company policy",
+        "Monitoring period as indicated by severity level",
+        "Incentive impact as defined by severity level"
+      ]
+    },
+    {
+      "id": "V-CON",
+      "category": "Misconduct & Behavior",
+      "description": "Covers behavioral issues including insubordination, disrespect toward colleagues or supervisors, workplace conflict, and unprofessional conduct.",
+      "examples": [
+        "Insubordination — refusal to follow reasonable instructions",
+        "Disrespectful behavior toward coworkers or supervisors",
+        "Engaging in verbal conflict during work hours",
+        "Use of inappropriate language",
+        "Repeated unprofessional conduct after coaching"
+      ],
+      "severity_range": [2, 5],
+      "severity_guidelines": {
+        "2": "Isolated incident of unprofessional conduct",
+        "3": "Repeated incidents; verbal conflict with coworkers",
+        "4": "Insubordination toward direct supervisor; pattern of disruptive behavior",
+        "5": "Aggressive or threatening behavior; behavior causing significant team disruption"
+      },
+      "default_consequences": [
+        "Issuance of this Notice to Explain (NTE)",
+        "Mandatory written response within 5 calendar days",
+        "Mandatory behavioral coaching or mediation",
+        "Monitoring period as indicated by severity level",
+        "Incentive impact as defined by severity level",
+        "Possible suspension pending investigation for higher severity"
+      ]
+    },
+    {
+      "id": "V-HAR",
+      "category": "Harassment & Discrimination",
+      "description": "Covers verbal harassment, sexual harassment, discriminatory behavior, bullying, and any conduct that creates a hostile work environment. All cases trigger immediate formal investigation.",
+      "examples": [
+        "Verbal harassment of a coworker",
+        "Sexual harassment (verbal, physical, or digital)",
+        "Discriminatory remarks based on protected characteristics",
+        "Workplace bullying or intimidation",
+        "Retaliation against a complainant"
+      ],
+      "severity_range": [3, 6],
+      "severity_guidelines": {
+        "3": "Confirmed verbal harassment of a non-severe nature (single incident)",
+        "4": "Repeated verbal harassment; discriminatory remarks",
+        "5": "Sexual harassment; severe bullying; retaliation against complainant",
+        "6": "Severe harassment with documented evidence; gross misconduct — termination review"
+      },
+      "default_consequences": [
+        "Immediate issuance of this Notice to Explain (NTE)",
+        "Mandatory written response within 3 calendar days (expedited)",
+        "Immediate investigation by HR and Ethics Committee",
+        "Possible immediate suspension pending investigation",
+        "Mandatory sensitivity and ethics training (if employment continues)",
+        "Monitoring period as indicated by severity level",
+        "Incentive impact as defined by severity level",
+        "Termination review for Level 6 cases"
+      ]
+    },
+    {
+      "id": "V-FRD",
+      "category": "Fraud & Integrity Violations",
+      "description": "Covers acts of dishonesty including theft, data falsification, time theft (e.g., buddy punching), confidentiality breaches, and any act that compromises the integrity of the company or its employees.",
+      "examples": [
+        "Falsification of attendance, timesheets, or performance records",
+        "Theft of company property, funds, or intellectual property",
+        "Buddy punching or clocking in/out for another employee",
+        "Unauthorized disclosure of confidential information",
+        "Misrepresentation in official company documents",
+        "Conflict of interest not disclosed to management"
+      ],
+      "severity_range": [4, 6],
+      "severity_guidelines": {
+        "4": "Minor data falsification; first-time time theft (small magnitude)",
+        "5": "Significant data falsification; theft of company property; confidentiality breach",
+        "6": "Major fraud causing financial loss; severe breach of trust — termination review"
+      },
+      "default_consequences": [
+        "Immediate issuance of this Notice to Explain (NTE)",
+        "Mandatory written response within 3 calendar days (expedited)",
+        "Immediate suspension pending investigation",
+        "Investigation by HR, Finance (if applicable), and Legal",
+        "Monitoring period as indicated by severity level",
+        "Incentive impact as defined by severity level",
+        "Possible legal action and recovery of damages",
+        "Termination review for Level 6 cases"
+      ]
+    }
+  ]
+}

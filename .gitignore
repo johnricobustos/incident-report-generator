@@ -1,0 +1,21 @@
+# Editor / IDE folders
+.vscode/
+.idea/
+
+# Node / npm (in case we add it later)
+node_modules/
+package-lock.json
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment / secrets — NEVER commit these
+.env
+.env.local
+*.key
+secrets.json
+
+# Logs
+*.log

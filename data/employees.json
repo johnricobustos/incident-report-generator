@@ -1,0 +1,320 @@
+{
+  "company": {
+    "name": "Northwind Solutions",
+    "domain": "northwindsolutions.com",
+    "hr_department": {
+      "head": "Patricia Bennett",
+      "email": "patricia.bennett@northwindsolutions.com"
+    }
+  },
+  "employees": [
+    {
+      "employee_id": "EMP-1001",
+      "full_name": "Marcus Chen",
+      "email": "marcus.chen@northwindsolutions.com",
+      "department": "Operations",
+      "position": "Operations Manager",
+      "supervisor_name": "Patricia Bennett",
+      "supervisor_email": "patricia.bennett@northwindsolutions.com",
+      "date_hired": "2022-03-15",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1002",
+      "full_name": "Sofia Rodriguez",
+      "email": "sofia.rodriguez@northwindsolutions.com",
+      "department": "Customer Service",
+      "position": "Customer Service Representative",
+      "supervisor_name": "Daniel Kim",
+      "supervisor_email": "daniel.kim@northwindsolutions.com",
+      "date_hired": "2024-08-22",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1003",
+      "full_name": "James Okonkwo",
+      "email": "james.okonkwo@northwindsolutions.com",
+      "department": "Customer Service",
+      "position": "Senior Customer Service Rep",
+      "supervisor_name": "Daniel Kim",
+      "supervisor_email": "daniel.kim@northwindsolutions.com",
+      "date_hired": "2021-11-08",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1004",
+      "full_name": "Aisha Patel",
+      "email": "aisha.patel@northwindsolutions.com",
+      "department": "Sales",
+      "position": "Sales Associate",
+      "supervisor_name": "Robert Hayes",
+      "supervisor_email": "robert.hayes@northwindsolutions.com",
+      "date_hired": "2025-09-01",
+      "employment_status": "Probationary"
+    },
+    {
+      "employee_id": "EMP-1005",
+      "full_name": "Daniel Kim",
+      "email": "daniel.kim@northwindsolutions.com",
+      "department": "Customer Service",
+      "position": "Customer Service Supervisor",
+      "supervisor_name": "Patricia Bennett",
+      "supervisor_email": "patricia.bennett@northwindsolutions.com",
+      "date_hired": "2020-06-10",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1006",
+      "full_name": "Olivia Thompson",
+      "email": "olivia.thompson@northwindsolutions.com",
+      "department": "Finance",
+      "position": "Junior Accountant",
+      "supervisor_name": "Linda Foster",
+      "supervisor_email": "linda.foster@northwindsolutions.com",
+      "date_hired": "2024-02-14",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1007",
+      "full_name": "Rashid Al-Mahmoud",
+      "email": "rashid.al-mahmoud@northwindsolutions.com",
+      "department": "IT",
+      "position": "IT Support Specialist",
+      "supervisor_name": "Karen Whitfield",
+      "supervisor_email": "karen.whitfield@northwindsolutions.com",
+      "date_hired": "2023-07-19",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1008",
+      "full_name": "Emma Larsen",
+      "email": "emma.larsen@northwindsolutions.com",
+      "department": "Operations",
+      "position": "Operations Analyst",
+      "supervisor_name": "Marcus Chen",
+      "supervisor_email": "marcus.chen@northwindsolutions.com",
+      "date_hired": "2023-04-03",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1009",
+      "full_name": "Tyrone Jackson",
+      "email": "tyrone.jackson@northwindsolutions.com",
+      "department": "Customer Service",
+      "position": "Customer Service Representative",
+      "supervisor_name": "Daniel Kim",
+      "supervisor_email": "daniel.kim@northwindsolutions.com",
+      "date_hired": "2025-10-15",
+      "employment_status": "Probationary"
+    },
+    {
+      "employee_id": "EMP-1010",
+      "full_name": "Linda Foster",
+      "email": "linda.foster@northwindsolutions.com",
+      "department": "Finance",
+      "position": "Finance Manager",
+      "supervisor_name": "Patricia Bennett",
+      "supervisor_email": "patricia.bennett@northwindsolutions.com",
+      "date_hired": "2019-09-23",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1011",
+      "full_name": "Mei Lin Wang",
+      "email": "mei.wang@northwindsolutions.com",
+      "department": "Sales",
+      "position": "Sales Representative",
+      "supervisor_name": "Robert Hayes",
+      "supervisor_email": "robert.hayes@northwindsolutions.com",
+      "date_hired": "2022-12-05",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1012",
+      "full_name": "Brandon Walsh",
+      "email": "brandon.walsh@northwindsolutions.com",
+      "department": "Operations",
+      "position": "Logistics Coordinator",
+      "supervisor_name": "Marcus Chen",
+      "supervisor_email": "marcus.chen@northwindsolutions.com",
+      "date_hired": "2024-05-20",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1013",
+      "full_name": "Priya Nair",
+      "email": "priya.nair@northwindsolutions.com",
+      "department": "IT",
+      "position": "Software Developer",
+      "supervisor_name": "Karen Whitfield",
+      "supervisor_email": "karen.whitfield@northwindsolutions.com",
+      "date_hired": "2023-01-30",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1014",
+      "full_name": "Robert Hayes",
+      "email": "robert.hayes@northwindsolutions.com",
+      "department": "Sales",
+      "position": "Sales Manager",
+      "supervisor_name": "Patricia Bennett",
+      "supervisor_email": "patricia.bennett@northwindsolutions.com",
+      "date_hired": "2018-11-12",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1015",
+      "full_name": "Yuki Tanaka",
+      "email": "yuki.tanaka@northwindsolutions.com",
+      "department": "Customer Service",
+      "position": "Customer Service Representative",
+      "supervisor_name": "Daniel Kim",
+      "supervisor_email": "daniel.kim@northwindsolutions.com",
+      "date_hired": "2024-11-04",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1016",
+      "full_name": "Carlos Mendoza",
+      "email": "carlos.mendoza@northwindsolutions.com",
+      "department": "Operations",
+      "position": "Warehouse Associate",
+      "supervisor_name": "Brandon Walsh",
+      "supervisor_email": "brandon.walsh@northwindsolutions.com",
+      "date_hired": "2025-07-10",
+      "employment_status": "Probationary"
+    },
+    {
+      "employee_id": "EMP-1017",
+      "full_name": "Karen Whitfield",
+      "email": "karen.whitfield@northwindsolutions.com",
+      "department": "IT",
+      "position": "IT Director",
+      "supervisor_name": "Patricia Bennett",
+      "supervisor_email": "patricia.bennett@northwindsolutions.com",
+      "date_hired": "2017-04-18",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1018",
+      "full_name": "Nadia Ibrahim",
+      "email": "nadia.ibrahim@northwindsolutions.com",
+      "department": "HR",
+      "position": "HR Specialist",
+      "supervisor_name": "Patricia Bennett",
+      "supervisor_email": "patricia.bennett@northwindsolutions.com",
+      "date_hired": "2023-09-25",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1019",
+      "full_name": "Connor O'Brien",
+      "email": "connor.obrien@northwindsolutions.com",
+      "department": "Sales",
+      "position": "Sales Associate",
+      "supervisor_name": "Robert Hayes",
+      "supervisor_email": "robert.hayes@northwindsolutions.com",
+      "date_hired": "2024-06-17",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1020",
+      "full_name": "Fatima Hassan",
+      "email": "fatima.hassan@northwindsolutions.com",
+      "department": "Finance",
+      "position": "Accounts Payable Clerk",
+      "supervisor_name": "Linda Foster",
+      "supervisor_email": "linda.foster@northwindsolutions.com",
+      "date_hired": "2024-03-08",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1021",
+      "full_name": "Devon Mitchell",
+      "email": "devon.mitchell@northwindsolutions.com",
+      "department": "Customer Service",
+      "position": "Customer Service Representative",
+      "supervisor_name": "Daniel Kim",
+      "supervisor_email": "daniel.kim@northwindsolutions.com",
+      "date_hired": "2025-11-12",
+      "employment_status": "Probationary"
+    },
+    {
+      "employee_id": "EMP-1022",
+      "full_name": "Isabella Romano",
+      "email": "isabella.romano@northwindsolutions.com",
+      "department": "Operations",
+      "position": "Quality Assurance Analyst",
+      "supervisor_name": "Marcus Chen",
+      "supervisor_email": "marcus.chen@northwindsolutions.com",
+      "date_hired": "2022-08-29",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1023",
+      "full_name": "Patricia Bennett",
+      "email": "patricia.bennett@northwindsolutions.com",
+      "department": "HR",
+      "position": "HR Director",
+      "supervisor_name": "Executive Office",
+      "supervisor_email": "executive@northwindsolutions.com",
+      "date_hired": "2016-02-01",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1024",
+      "full_name": "Ahmed Khalil",
+      "email": "ahmed.khalil@northwindsolutions.com",
+      "department": "IT",
+      "position": "Junior Developer",
+      "supervisor_name": "Karen Whitfield",
+      "supervisor_email": "karen.whitfield@northwindsolutions.com",
+      "date_hired": "2025-08-04",
+      "employment_status": "Probationary"
+    },
+    {
+      "employee_id": "EMP-1025",
+      "full_name": "Grace Adeyemi",
+      "email": "grace.adeyemi@northwindsolutions.com",
+      "department": "Sales",
+      "position": "Senior Sales Representative",
+      "supervisor_name": "Robert Hayes",
+      "supervisor_email": "robert.hayes@northwindsolutions.com",
+      "date_hired": "2021-05-14",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1026",
+      "full_name": "Henrik Bergstrom",
+      "email": "henrik.bergstrom@northwindsolutions.com",
+      "department": "Operations",
+      "position": "Warehouse Associate",
+      "supervisor_name": "Brandon Walsh",
+      "supervisor_email": "brandon.walsh@northwindsolutions.com",
+      "date_hired": "2023-10-02",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1027",
+      "full_name": "Camille Dubois",
+      "email": "camille.dubois@northwindsolutions.com",
+      "department": "Customer Service",
+      "position": "Customer Service Representative",
+      "supervisor_name": "Daniel Kim",
+      "supervisor_email": "daniel.kim@northwindsolutions.com",
+      "date_hired": "2024-01-22",
+      "employment_status": "Regular"
+    },
+    {
+      "employee_id": "EMP-1028",
+      "full_name": "Marcus Webb",
+      "email": "marcus.webb@northwindsolutions.com",
+      "department": "Finance",
+      "position": "Financial Analyst",
+      "supervisor_name": "Linda Foster",
+      "supervisor_email": "linda.foster@northwindsolutions.com",
+      "date_hired": "2022-04-11",
+      "employment_status": "Regular"
+    }
+  ]
+}
