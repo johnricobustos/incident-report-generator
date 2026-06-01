@@ -21,9 +21,11 @@ A lightweight, single-page web tool that helps HR personnel draft consistent, we
 
 ## 📸 Screenshots
 
-> _Screenshots are being added. The images below will live in the `screenshots/` folder._
+A quick visual tour of the app. The empty form on first load, ready for input:
 
-> 📷 `screenshots/01-empty-form.png` — the empty form on first load
+![Empty form — default state](screenshots/01-empty-form.png)
+
+See below for the filled form, the generated email, settings, and the in-session HR officer modal.
 
 ---
 
@@ -41,7 +43,7 @@ A lightweight, single-page web tool that helps HR personnel draft consistent, we
 - ✅ **Copy / Download / Print** — clean plain-text output that pastes neatly into Outlook or Gmail
 - ✅ **Privacy-first key handling** — your API key lives in memory only, never on disk or in git
 
-> 📷 `screenshots/05-edit-hr-modal.png` — adding an HR officer on the fly, with inline validation
+![Add HR Officer modal — adding a new officer for this session](screenshots/05-add-hr-officer-modal.png)
 
 ---
 
@@ -58,7 +60,7 @@ A lightweight, single-page web tool that helps HR personnel draft consistent, we
 
 The app loads a fictional employee directory and a violation catalog from embedded data, so it runs entirely in the browser with no backend. You pick the HR officer issuing the notice, choose an employee, select a violation category and a valid severity level, and describe the incident. The app assembles all of that — employee and supervisor details, severity guidelines, monitoring period, incentive impact, and response deadline — into a structured context. In **Demo Mode**, it fills a professionally worded template matched to the severity band; in **Live AI Mode**, it sends that context to Claude and returns a freshly drafted email. Either way you get the same clean email panel, which you can edit, copy, download, or print.
 
-> 📷 `screenshots/02-filled-form-severity.png` — a filled form showing the color-coded severity badge, monitoring period, and incentive impact
+![Filled form with employee, violation, and severity selected](screenshots/02-filled-form-severity.png)
 
 ---
 
@@ -88,7 +90,7 @@ The app runs in **Demo Mode** by default — no setup, no API key, no cost.
 | **Cost** | Free | Billed to your Anthropic account |
 | **Best for** | Trying the app, offline use, demos | Production-quality, context-aware drafts |
 
-> 📷 `screenshots/03-demo-email.png` — a generated email in Demo Mode, with the 📋 Demo template badge
+![Generated NTE email in Demo Mode](screenshots/03-demo-email.png)
 
 ### Switching to Live AI Mode
 
@@ -100,7 +102,7 @@ The app runs in **Demo Mode** by default — no setup, no API key, no cost.
 
 > 🔒 **Your API key is stored in memory only.** It is never written to disk, never committed to git, and never sent anywhere except directly to Anthropic. Closing the tab clears it. You'll re-enter it next session.
 
-> 📷 `screenshots/04-settings-panel.png` — the settings panel with the Demo ↔ Live AI toggle and masked API-key input
+![Settings panel with Demo/Live AI toggle and API key input](screenshots/04-settings-panel.png)
 
 ---
 
