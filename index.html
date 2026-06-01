@@ -34,7 +34,7 @@
       <div class="h-10 w-10 rounded-lg bg-white/10 flex items-center justify-center font-bold text-lg">N</div>
       <div>
         <h1 class="text-xl font-semibold leading-tight">Northwind Solutions</h1>
-        <p class="text-sm text-slate-300">Incident Report Generator — Notice to Explain (NTE)</p>
+        <p class="hidden sm:block text-sm text-slate-300">Incident Report Generator — Notice to Explain (NTE)</p>
       </div>
       <div class="ml-auto flex items-center gap-3">
         <span id="headerStatus" class="text-xs font-medium bg-white/10 rounded-full px-3 py-1 whitespace-nowrap">🟡 Demo Mode</span>
@@ -263,11 +263,9 @@
         </div>
 
         <!-- BADGE / CONSEQUENCE AREA -->
-        <div class="flex flex-wrap items-center gap-3 text-sm">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
           <span id="emailBadge" class="severity-badge">Level —</span>
-          <span class="text-slate-500">|</span>
           <span><span class="font-semibold text-slate-500">Monitoring:</span> <span id="outMonitoring" class="text-slate-800"></span></span>
-          <span class="text-slate-500">|</span>
           <span><span class="font-semibold text-slate-500">Incentive:</span> <span id="outIncentive" class="text-slate-800"></span></span>
         </div>
         <div id="outProbationaryBox" class="rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm hidden">
@@ -333,13 +331,14 @@
           class="h-8 w-8 rounded hover:bg-white/20 transition-colors text-lg">✕</button>
       </div>
 
-      <div class="px-6 py-6 space-y-6 overflow-y-auto">
+      <div class="flex-1 min-h-0 px-6 py-6 space-y-6 overflow-y-auto">
         <!-- Mode toggle -->
         <div>
           <span class="text-sm font-medium text-slate-700">Generation Mode</span>
           <label class="mt-3 flex items-center gap-3 cursor-pointer">
             <input id="modeToggle" type="checkbox" class="sr-only peer" />
             <span class="relative h-6 w-11 rounded-full bg-slate-300 peer-checked:bg-green-500 transition-colors
+                         peer-focus-visible:ring-2 peer-focus-visible:ring-navy peer-focus-visible:ring-offset-2
                          after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:h-5 after:w-5
                          after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5"></span>
             <span class="text-sm">
