@@ -50,6 +50,31 @@ const NORTHWIND_DATA = {
     6: "Probationary contract is terminated, subject to HR interview and due process.",
   },
 
+  // Common positions at Northwind. Mirrors data/positions.json. Not used in
+  // Chunk 3 — seeded here for Chunk 5's Add/Edit Employee UI.
+  positions: [
+    "Operations Manager", "Operations Analyst", "Operations Director",
+    "Logistics Coordinator", "Warehouse Associate", "Quality Assurance Analyst",
+    "Customer Service Representative", "Senior Customer Service Rep",
+    "Customer Service Supervisor", "Customer Success Manager",
+    "Sales Associate", "Sales Representative", "Senior Sales Representative",
+    "Sales Manager", "Account Executive", "Marketing Specialist", "Marketing Manager",
+    "Junior Accountant", "Accounts Payable Clerk", "Financial Analyst",
+    "Finance Manager", "Payroll Specialist", "Procurement Officer",
+    "IT Support Specialist", "Network Administrator", "Software Developer",
+    "Junior Developer", "Data Analyst", "IT Director",
+    "HR Specialist", "HR Director", "Recruitment Officer",
+    "Executive Assistant", "Office Administrator",
+  ],
+
+  // HR officers who can issue notices. Mirrors data/hr_staff.json. This roster
+  // is the seed; the user can add more on the fly (in-memory, session-only).
+  hr_staff: [
+    { name: "Patricia Bennett", title: "HR Director", email: "patricia.bennett@northwindsolutions.com" },
+    { name: "Nadia Ibrahim", title: "HR Specialist", email: "nadia.ibrahim@northwindsolutions.com" },
+    { name: "John Rico Bustos", title: "HR Specialist", email: "john.bustos@northwindsolutions.com" },
+  ],
+
   employees: [
     { employee_id: "EMP-1001", full_name: "Marcus Chen", email: "marcus.chen@northwindsolutions.com", department: "Operations", position: "Operations Manager", supervisor_name: "Patricia Bennett", supervisor_email: "patricia.bennett@northwindsolutions.com", date_hired: "2022-03-15", employment_status: "Regular" },
     { employee_id: "EMP-1002", full_name: "Sofia Rodriguez", email: "sofia.rodriguez@northwindsolutions.com", department: "Customer Service", position: "Customer Service Representative", supervisor_name: "Daniel Kim", supervisor_email: "daniel.kim@northwindsolutions.com", date_hired: "2024-08-22", employment_status: "Regular" },

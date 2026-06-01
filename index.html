@@ -36,6 +36,13 @@
         <h1 class="text-xl font-semibold leading-tight">Northwind Solutions</h1>
         <p class="text-sm text-slate-300">Incident Report Generator — Notice to Explain (NTE)</p>
       </div>
+      <div class="ml-auto flex items-center gap-3">
+        <span id="headerStatus" class="text-xs font-medium bg-white/10 rounded-full px-3 py-1 whitespace-nowrap">🟡 Demo Mode</span>
+        <button id="gearBtn" type="button" aria-label="Settings"
+          class="h-9 w-9 rounded-lg bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center text-lg">
+          ⚙️
+        </button>
+      </div>
     </div>
   </header>
 
@@ -48,16 +55,35 @@
       <h2 class="text-base font-semibold text-navy mb-4 flex items-center gap-2">
         <span class="inline-block h-5 w-1 rounded bg-navy"></span> HR Officer Details
       </h2>
-      <div class="grid sm:grid-cols-2 gap-4">
+      <div class="flex items-end gap-3">
+        <label class="block flex-1">
+          <span class="text-sm font-medium text-slate-600">Select HR Officer</span>
+          <select id="hrOfficerSelect"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 bg-white focus:border-navy focus:ring-1 focus:ring-navy outline-none">
+          </select>
+        </label>
+        <button id="editHrBtn" type="button"
+          class="shrink-0 bg-white hover:bg-slate-100 text-navy border border-navy text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+          Edit HR Staff
+        </button>
+      </div>
+
+      <!-- Auto-filled, read-only — shows exactly what will appear on the notice -->
+      <div class="grid sm:grid-cols-3 gap-4 mt-4">
         <label class="block">
-          <span class="text-sm font-medium text-slate-600">HR Officer Name</span>
-          <input id="hrName" type="text" placeholder="e.g., Patricia Bennett"
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Name</span>
+          <input id="hrName" type="text" readonly
+            class="mt-1 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700" />
         </label>
         <label class="block">
-          <span class="text-sm font-medium text-slate-600">HR Officer Title</span>
-          <input id="hrTitle" type="text" placeholder="e.g., HR Specialist"
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Title</span>
+          <input id="hrTitle" type="text" readonly
+            class="mt-1 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700" />
+        </label>
+        <label class="block">
+          <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Email (CC'd)</span>
+          <input id="hrEmail" type="email" readonly
+            class="mt-1 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700" />
         </label>
       </div>
     </section>
@@ -210,8 +236,17 @@
     <section id="emailPanel" class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hidden fade-in">
       <div class="bg-navy text-white px-6 py-3 flex items-center justify-between print-hide-bar">
         <h2 class="text-base font-semibold">Generated NTE — Draft</h2>
-        <span class="text-xs bg-amber-400 text-navy-dark font-semibold px-2 py-1 rounded">DEMO MODE — sample output</span>
+        <span id="emailModeBadge" class="text-xs font-semibold px-2 py-1 rounded bg-amber-400 text-navy-dark">📋 Demo template</span>
       </div>
+
+      <!-- Loading state (Live AI mode) -->
+      <div id="emailLoading" class="hidden px-6 py-16 flex flex-col items-center justify-center gap-4 text-slate-500">
+        <div class="spinner"></div>
+        <p class="text-sm font-medium">Drafting NTE email with Claude…</p>
+      </div>
+
+      <!-- Fallback / info notice -->
+      <div id="genNotice" class="hidden mx-6 mt-4 rounded-lg border border-amber-300 bg-amber-50 text-amber-900 text-sm px-4 py-3"></div>
 
       <!-- The printable / copyable email document -->
       <article id="emailDocument" class="px-6 py-6 space-y-5">
@@ -250,8 +285,8 @@
           <div id="emailBodyPrint" class="email-body-print" aria-hidden="true"></div>
         </div>
 
-        <!-- SIGNATURE -->
-        <div class="text-sm leading-relaxed text-slate-800 border-t border-slate-200 pt-4">
+        <!-- SIGNATURE (demo mode only — AI output includes its own signature) -->
+        <div id="emailSignature" class="text-sm leading-relaxed text-slate-800 border-t border-slate-200 pt-4">
           <p>Sincerely,</p>
           <p class="mt-3 font-semibold" id="outSigName"></p>
           <p id="outSigTitle"></p>
@@ -260,7 +295,7 @@
       </article>
 
       <!-- ACTION BUTTONS -->
-      <div class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex flex-wrap gap-3 print-hide-bar">
+      <div id="emailActions" class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex flex-wrap gap-3 print-hide-bar">
         <button id="copyBtn" type="button"
           class="bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
           Copy to Clipboard
@@ -286,8 +321,114 @@
     Northwind Solutions HR Department · Internal Tool · Sample/fictional data
   </footer>
 
-  <!-- Data first (defines NORTHWIND_DATA), then app logic. -->
+  <!-- ============================================================
+       Settings panel — slide-in from right. Demo/Live toggle + API key.
+       ============================================================ -->
+  <div id="settingsPanel" class="fixed inset-0 z-50 hidden">
+    <div id="settingsBackdrop" class="absolute inset-0 bg-black/40"></div>
+    <aside class="settings-drawer absolute top-0 right-0 h-full w-full max-w-md bg-white shadow-xl flex flex-col">
+      <div class="bg-navy text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="text-base font-semibold">Settings</h3>
+        <button id="closeSettingsBtn" type="button" aria-label="Close"
+          class="h-8 w-8 rounded hover:bg-white/20 transition-colors text-lg">✕</button>
+      </div>
+
+      <div class="px-6 py-6 space-y-6 overflow-y-auto">
+        <!-- Mode toggle -->
+        <div>
+          <span class="text-sm font-medium text-slate-700">Generation Mode</span>
+          <label class="mt-3 flex items-center gap-3 cursor-pointer">
+            <input id="modeToggle" type="checkbox" class="sr-only peer" />
+            <span class="relative h-6 w-11 rounded-full bg-slate-300 peer-checked:bg-green-500 transition-colors
+                         after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:h-5 after:w-5
+                         after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-5"></span>
+            <span class="text-sm">
+              <span class="font-medium" id="modeToggleLabel">Demo Mode</span>
+              <span class="text-slate-400"> — toggle for Live AI</span>
+            </span>
+          </label>
+        </div>
+
+        <!-- API key -->
+        <div>
+          <label class="block">
+            <span class="text-sm font-medium text-slate-700">Anthropic API Key</span>
+            <div class="mt-1 flex gap-2">
+              <input id="apiKeyInput" type="password" autocomplete="off" placeholder="sk-ant-…"
+                class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+              <button id="toggleKeyVisBtn" type="button" aria-label="Show/hide key"
+                class="shrink-0 rounded-lg border border-slate-300 px-3 hover:bg-slate-100 transition-colors">👁️</button>
+            </div>
+          </label>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">
+            Your API key is stored <strong>in memory only</strong>. It is never saved to disk, never committed to git,
+            and never sent anywhere except directly to Anthropic. Closing the tab clears it.
+          </p>
+        </div>
+
+        <!-- Test connection -->
+        <div>
+          <button id="testConnBtn" type="button"
+            class="bg-white hover:bg-slate-100 text-navy border border-navy text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+            Test Connection
+          </button>
+          <p id="testResult" class="hidden mt-2 text-sm"></p>
+        </div>
+      </div>
+
+      <div class="mt-auto border-t border-slate-200 px-6 py-4">
+        <button id="saveSettingsBtn" type="button"
+          class="w-full bg-navy hover:bg-navy-dark text-white font-semibold px-4 py-2.5 rounded-lg transition-colors">
+          Save &amp; Close
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ============================================================
+       Add HR Staff modal — session-only (no persistence until Chunk 5)
+       ============================================================ -->
+  <div id="hrModal" class="fixed inset-0 z-50 hidden">
+    <div id="hrModalBackdrop" class="absolute inset-0 bg-black/40"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="relative bg-white rounded-xl shadow-xl border border-slate-200 w-full max-w-md p-6 fade-in">
+        <h3 class="text-base font-semibold text-navy mb-1">Add HR Officer</h3>
+        <p class="text-xs text-slate-500 mb-4">Added for this session only — not saved to disk.</p>
+        <div class="space-y-3">
+          <label class="block">
+            <span class="text-sm font-medium text-slate-600">Name</span>
+            <input id="newHrName" type="text" placeholder="e.g., Maria Santos"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium text-slate-600">Title</span>
+            <input id="newHrTitle" type="text" placeholder="e.g., HR Specialist"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium text-slate-600">Email</span>
+            <input id="newHrEmail" type="email" placeholder="e.g., maria.santos@northwindsolutions.com"
+              class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-navy focus:ring-1 focus:ring-navy outline-none" />
+          </label>
+          <p id="hrModalError" class="error-msg hidden"></p>
+        </div>
+        <div class="flex justify-end gap-3 mt-5">
+          <button id="closeHrBtn" type="button"
+            class="bg-white hover:bg-slate-100 text-slate-600 border border-slate-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+            Cancel
+          </button>
+          <button id="addHrBtn" type="button"
+            class="bg-navy hover:bg-navy-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+            Add Officer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data first (defines NORTHWIND_DATA), then API helper, then app logic. -->
   <script src="data.js"></script>
+  <script src="api.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

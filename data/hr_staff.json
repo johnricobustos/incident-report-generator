@@ -1,0 +1,19 @@
+{
+  "hr_staff": [
+    {
+      "name": "Patricia Bennett",
+      "title": "HR Director",
+      "email": "patricia.bennett@northwindsolutions.com"
+    },
+    {
+      "name": "Nadia Ibrahim",
+      "title": "HR Specialist",
+      "email": "nadia.ibrahim@northwindsolutions.com"
+    },
+    {
+      "name": "John Rico Bustos",
+      "title": "HR Specialist",
+      "email": "john.bustos@northwindsolutions.com"
+    }
+  ]
+}
